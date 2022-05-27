@@ -1,29 +1,42 @@
 import 'package:flutter/material.dart';
 
+const kAnimationDuration = Duration(milliseconds: 500);
 class ItemSizeView extends StatelessWidget {
   final String label;
-  final Color backgroundColor;
+  final bool changeBackground;
+  final VoidCallback onTapSize;
 
   const ItemSizeView({
     Key? key,
     required this.label,
-    this.backgroundColor = Colors.blue,
+    required this.changeBackground,
+    required this.onTapSize
   }) : super(key: key);
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      width: 60,
-      height: 60,
-      child: Card(
-        color: backgroundColor,
+    return InkWell(
+      onTap: onTapSize,
+      child:Card(
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(10),
         ),
-        child: Center(
-          child: Text(
-            label,
-            style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w500),
-          )
+        child: AnimatedContainer(
+          duration: kAnimationDuration,
+          width: 60,
+          height: 60,
+          decoration: BoxDecoration(
+            color: changeBackground ? Colors.blue : Colors.white,
+            borderRadius: BorderRadius.circular(10)
+          ),
+          child: Center(
+              child: Text(
+                label,
+                style:  TextStyle(
+                  color: changeBackground ? Colors.white : Colors.blue,
+                  fontSize: 18,
+                  fontWeight: FontWeight.w500,
+                ),
+              )),
         ),
       ),
     );
