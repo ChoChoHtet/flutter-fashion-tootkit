@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:futter_fanshion_ui/colors.dart';
 import 'package:futter_fanshion_ui/explicit_collapse_animation.dart';
 import 'package:futter_fanshion_ui/explicit_favorite_animation.dart';
 import 'package:futter_fanshion_ui/item_size_view.dart';
@@ -48,52 +49,9 @@ class _DetailPageState extends State<DetailPage> {
             automaticallyImplyLeading: false,
             expandedHeight: 280,
             flexibleSpace: Stack(children: [
-              FlexibleSpaceBar(
+              const FlexibleSpaceBar(
                 collapseMode: CollapseMode.parallax,
-                background: Stack(
-                  children: [
-                    Positioned.fill(
-                      child: Image.asset(
-                        "assets/images/model.jpeg",
-                        fit: BoxFit.cover,
-                      ),
-                    ),
-                    Align(
-                      alignment: Alignment.topLeft,
-                      child: Padding(
-                        padding: const EdgeInsets.only(top: 40, left: 16),
-                        child: InkWell(
-                          onTap: () => Navigator.pop(context),
-                          child: const Icon(
-                            Icons.arrow_back_ios,
-                            size: 30,
-                            color: Colors.white,
-                          ),
-                        ),
-                      ),
-                    ),
-                    Align(
-                      alignment: Alignment.topRight,
-                      child: Padding(
-                        padding: const EdgeInsets.only(top: 40, right: 16),
-                        child: Row(
-                          mainAxisSize: MainAxisSize.min,
-                          children: const [
-                            ExplicitFavoriteAnimation(),
-                            SizedBox(
-                              width: 16,
-                            ),
-                            Icon(
-                              Icons.share,
-                              size: 30,
-                              color: Colors.white,
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
+                background: ItemCoverSection(),
               ),
               Align(
                 alignment: Alignment.bottomCenter,
@@ -133,24 +91,27 @@ class _DetailPageState extends State<DetailPage> {
                   ),
                   const Text(
                     "\$ 19,39 ",
-                    style: TextStyle(fontSize: 18, color: Colors.blueAccent),
+                    style: TextStyle(fontSize: 18, color: kColorItemDetail),
                   ),
                   const SizedBox(
-                    height: 10,
+                    height: 30,
                   ),
                   Row(
                     children: [
                       const Text(
                         "Descriptions",
-                        style: TextStyle(fontSize: 18),
+                        style: TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.w500,
+                        ),
                       ),
                       const Spacer(),
-                      ExplicitCollapseAnimation(onTapCollapse: (){
-                        collapseText =!collapseText ;
-                        setState((){
-                        });
-
-                      },)
+                      ExplicitCollapseAnimation(
+                        onTapCollapse: () {
+                          collapseText = !collapseText;
+                          setState(() {});
+                        },
+                      )
                     ],
                   ),
                   const SizedBox(
@@ -163,29 +124,32 @@ class _DetailPageState extends State<DetailPage> {
                       height: collapseText ? 0 : null,
                       child: const Text(
                         "You've just seen how to unit test a repository. In these next steps, you're going to again use dependency injection and create another test double—this time to show how to write unit and integration tests for your view models.",
-                        style: TextStyle(fontSize: 18),
+                        style: TextStyle(
+                          color: Colors.black45,
+                            fontSize: 18,
+                        ),
                       ),
                     ),
                   ),
                   const SizedBox(
-                    height: 20,
+                    height: 30,
                   ),
                   Row(
                     children: const [
                       Text(
                         "Size your size",
-                        style: TextStyle(fontSize: 18),
+                        style: TextStyle(
+                            fontSize: 18, fontWeight: FontWeight.w500),
                       ),
                       Spacer(),
                       Text(
                         "Size Guide",
-                        style: TextStyle(
-                            fontSize: 18, color: Colors.deepPurpleAccent),
+                        style: TextStyle(fontSize: 18, color: kColorItemDetail),
                       )
                     ],
                   ),
                   const SizedBox(
-                    height: 16,
+                    height: 20,
                   ),
                   SizedBox(
                     height: 60,
@@ -208,6 +172,60 @@ class _DetailPageState extends State<DetailPage> {
           ]))
         ],
       ),
+    );
+  }
+}
+
+class ItemCoverSection extends StatelessWidget {
+  const ItemCoverSection({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Stack(
+      children: [
+        Positioned.fill(
+          child: Image.asset(
+            "assets/images/model.jpeg",
+            fit: BoxFit.cover,
+          ),
+        ),
+        Align(
+          alignment: Alignment.topLeft,
+          child: Padding(
+            padding: const EdgeInsets.only(top: 40, left: 16),
+            child: InkWell(
+              onTap: () => Navigator.pop(context),
+              child: const Icon(
+                Icons.arrow_back_ios,
+                size: 30,
+                color: Colors.white,
+              ),
+            ),
+          ),
+        ),
+        Align(
+          alignment: Alignment.topRight,
+          child: Padding(
+            padding: const EdgeInsets.only(top: 40, right: 16),
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: const [
+                ExplicitFavoriteAnimation(),
+                SizedBox(
+                  width: 16,
+                ),
+                Icon(
+                  Icons.share,
+                  size: 30,
+                  color: Colors.white,
+                ),
+              ],
+            ),
+          ),
+        ),
+      ],
     );
   }
 }

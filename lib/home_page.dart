@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:futter_fanshion_ui/colors.dart';
 import 'package:futter_fanshion_ui/detail_page.dart';
 import 'package:futter_fanshion_ui/item_size_view.dart';
 import 'package:futter_fanshion_ui/recommend_item_view.dart';
+import 'package:futter_fanshion_ui/recommend_vo.dart';
 
 const kAnimationFadeIn = Duration(milliseconds: 1000);
 
@@ -14,6 +16,20 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   bool changeTheme = false;
+  final List<RecommendVO> recommendItemList = [
+    RecommendVO(
+      name: "shoes",
+      imgPath: "assets/images/high_heels.png",
+      colors: kColorItem1,
+      textColors: kColorItemText1,
+    ),
+    RecommendVO(
+      name: "succulent",
+      imgPath: "assets/images/succulent.png",
+      colors: kColorItem2,
+      textColors: kColorItemText2,
+    ),
+  ];
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -56,11 +72,13 @@ class _HomePageState extends State<HomePage> {
               TweenAnimationBuilder(
                 tween: Tween<double>(begin: 0, end: 1),
                 duration: kAnimationFadeIn,
-                child: TrendForYouSection(changeTheme: changeTheme,),
+                child: TrendForYouSection(
+                  changeTheme: changeTheme,
+                ),
                 builder: (context, double value, childValue) => Opacity(
                   opacity: value,
                   child: Padding(
-                    padding: EdgeInsets.only(top: 180, left: value * 16),
+                    padding: EdgeInsets.only(top: 160, left: value * 16),
                     child: childValue,
                   ),
                 ),
@@ -75,12 +93,13 @@ class _HomePageState extends State<HomePage> {
                   duration: kAnimationFadeIn,
                   child: RecommendSection(
                     changeTheme: changeTheme,
+                    recommendList: recommendItemList,
                   ),
                   builder: (context, double value, childValue) => Opacity(
                     opacity: value,
                     child: Padding(
                       padding: EdgeInsets.only(
-                        bottom: value * 90,
+                        bottom: value * 120,
                         left: 16,
                         right: 16,
                       ),
@@ -101,9 +120,10 @@ class RecommendSection extends StatelessWidget {
   const RecommendSection({
     Key? key,
     required this.changeTheme,
+    required this.recommendList,
   }) : super(key: key);
   final bool changeTheme;
-
+  final List<RecommendVO> recommendList;
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -120,9 +140,13 @@ class RecommendSection extends StatelessWidget {
         ),
         GridView.builder(
           shrinkWrap: true,
-          itemCount: 2,
+          itemCount: recommendList.length,
           gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: 2, crossAxisSpacing: 16, childAspectRatio: 1.2),
+            crossAxisCount: 2,
+            crossAxisSpacing: 16,
+            mainAxisSpacing: 10,
+            childAspectRatio: 1.1
+          ),
           itemBuilder: (BuildContext context, int index) {
             return InkWell(
                 onTap: () {
@@ -131,7 +155,12 @@ class RecommendSection extends StatelessWidget {
                     MaterialPageRoute(builder: (context) => const DetailPage()),
                   );
                 },
-                child: const RecommendItemView());
+                child: RecommendItemView(
+                  name: recommendList[index].name ?? "",
+                  imgPath: recommendList[index].imgPath ?? "",
+                  color: recommendList[index].colors ?? Colors.white,
+                  textColor: recommendList[index].textColors ?? Colors.black45,
+                ));
           },
         ),
       ],
@@ -308,7 +337,7 @@ class ProfileSection extends StatelessWidget {
                 style: TextStyle(
                   color: changeTheme ? Colors.white : Colors.black,
                   fontSize: 16,
-                  fontWeight: FontWeight.w400,
+                  fontWeight: FontWeight.w500,
                 ),
               ),
             ],
@@ -319,7 +348,7 @@ class ProfileSection extends StatelessWidget {
             child: Icon(
               Icons.notifications_none_outlined,
               size: 30,
-              color: changeTheme ? Colors.white : Colors.black,
+              color: changeTheme ? Colors.white : Colors.black45,
             ),
           )
         ],

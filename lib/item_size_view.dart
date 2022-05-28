@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import 'colors.dart';
+
 const kAnimationDuration = Duration(milliseconds: 500);
 class ItemSizeView extends StatelessWidget {
   final String label;
@@ -25,14 +27,14 @@ class ItemSizeView extends StatelessWidget {
           width: 60,
           height: 60,
           decoration: BoxDecoration(
-            color: changeBackground ? Colors.blue : Colors.white,
+            color: changeBackground ? kColorItemDetail : Colors.white,
             borderRadius: BorderRadius.circular(10)
           ),
           child: Center(
               child: Text(
                 label,
                 style:  TextStyle(
-                  color: changeBackground ? Colors.white : Colors.blue,
+                  color: changeBackground ? Colors.white : Colors.black54,
                   fontSize: 18,
                   fontWeight: FontWeight.w500,
                 ),
