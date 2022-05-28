@@ -130,38 +130,42 @@ class RecommendSection extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisSize: MainAxisSize.min,
       children: [
-        Text(
-          "Recommended",
-          style: TextStyle(
-            color: changeTheme ? Colors.white : Colors.black,
-            fontSize: 18,
-            fontWeight: FontWeight.w500,
-          ),
+        TitleAndIndicationView(
+          changeTheme: changeTheme,
+          title: "Recommended",
         ),
-        GridView.builder(
-          shrinkWrap: true,
-          itemCount: recommendList.length,
-          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: 2,
-            crossAxisSpacing: 16,
-            mainAxisSpacing: 10,
-            childAspectRatio: 1.1
+        const SizedBox(
+          height: 30,
+        ),
+        MediaQuery.removePadding(
+          context: context,
+          removeTop: true,
+          child: GridView.builder(
+            shrinkWrap: true,
+            itemCount: recommendList.length,
+            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 2,
+                crossAxisSpacing: 16,
+                mainAxisSpacing: 10,
+                childAspectRatio: 1.1),
+            itemBuilder: (BuildContext context, int index) {
+              return InkWell(
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const DetailPage()),
+                    );
+                  },
+                  child: RecommendItemView(
+                    name: recommendList[index].name ?? "",
+                    imgPath: recommendList[index].imgPath ?? "",
+                    color: recommendList[index].colors ?? Colors.white,
+                    textColor:
+                        recommendList[index].textColors ?? Colors.black45,
+                  ));
+            },
           ),
-          itemBuilder: (BuildContext context, int index) {
-            return InkWell(
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => const DetailPage()),
-                  );
-                },
-                child: RecommendItemView(
-                  name: recommendList[index].name ?? "",
-                  imgPath: recommendList[index].imgPath ?? "",
-                  color: recommendList[index].colors ?? Colors.white,
-                  textColor: recommendList[index].textColors ?? Colors.black45,
-                ));
-          },
         ),
       ],
     );
@@ -183,16 +187,12 @@ class TrendForYouSection extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisSize: MainAxisSize.min,
         children: [
-          Text(
-            "Trending for you ",
-            style: TextStyle(
-              color: changeTheme ? Colors.white : Colors.black,
-              fontSize: 18,
-              fontWeight: FontWeight.w500,
-            ),
+          TitleAndIndicationView(
+            changeTheme: changeTheme,
+            title: "Trending for You",
           ),
           const SizedBox(
-            height: 20,
+            height: 30,
           ),
           Container(
             height: 300,
@@ -291,6 +291,47 @@ class TrendForYouSection extends StatelessWidget {
   }
 }
 
+class TitleAndIndicationView extends StatelessWidget {
+  const TitleAndIndicationView({
+    Key? key,
+    required this.changeTheme,
+    required this.title,
+  }) : super(key: key);
+
+  final bool changeTheme;
+  final String? title;
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      children: [
+        Text(
+          title ?? "",
+          style: TextStyle(
+            color: changeTheme ? Colors.white : Colors.black,
+            fontSize: 18,
+            fontWeight: FontWeight.w500,
+          ),
+        ),
+        const Spacer(),
+        Padding(
+          padding: const EdgeInsets.only(right: 8),
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: const [
+              BadgeAndIndicatorView(color: kColorItemDetail),
+              SizedBox(
+                width: 8,
+              ),
+              BadgeAndIndicatorView(color: Colors.black45),
+            ],
+          ),
+        )
+      ],
+    );
+  }
+}
+
 class ProfileSection extends StatelessWidget {
   const ProfileSection({
     Key? key,
@@ -343,16 +384,45 @@ class ProfileSection extends StatelessWidget {
             ],
           ),
           const Spacer(),
-          InkWell(
-            onTap: onTapNotification,
-            child: Icon(
-              Icons.notifications_none_outlined,
-              size: 30,
-              color: changeTheme ? Colors.white : Colors.black45,
-            ),
+          Stack(
+            children: [
+              InkWell(
+                onTap: onTapNotification,
+                child: Icon(
+                  Icons.notifications_none_outlined,
+                  size: 30,
+                  color: changeTheme ? Colors.white : Colors.black45,
+                ),
+              ),
+              const Positioned(
+                top: 0,
+                right: 0,
+                child: BadgeAndIndicatorView(
+                  color: Colors.pinkAccent,
+                ),
+              )
+            ],
           )
         ],
       ),
+    );
+  }
+}
+
+class BadgeAndIndicatorView extends StatelessWidget {
+  const BadgeAndIndicatorView({
+    Key? key,
+    required this.color,
+  }) : super(key: key);
+  final Color color;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: 6,
+      height: 6,
+      decoration:
+          BoxDecoration(color: color, borderRadius: BorderRadius.circular(3)),
     );
   }
 }

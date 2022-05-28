@@ -51,7 +51,7 @@ class _DetailPageState extends State<DetailPage> {
             flexibleSpace: Stack(children: [
               const FlexibleSpaceBar(
                 collapseMode: CollapseMode.parallax,
-                background: ItemCoverSection(),
+                background: OutfitCoverSection(),
               ),
               Align(
                 alignment: Alignment.bottomCenter,
@@ -68,116 +68,33 @@ class _DetailPageState extends State<DetailPage> {
             ]),
           ),
           SliverList(
-              delegate: SliverChildListDelegate([
-            Container(
-              padding: const EdgeInsets.symmetric(horizontal: 16),
-              decoration:
-                  BoxDecoration(borderRadius: BorderRadius.circular(16)),
-              child: Column(
-                children: [
-                  const Text(
-                    "OUTFIT IDEAS",
-                    style: TextStyle(fontSize: 18),
-                  ),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  const Text(
-                    "Modern Blue Jacket",
-                    style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-                  ),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  const Text(
-                    "\$ 19,39 ",
-                    style: TextStyle(fontSize: 18, color: kColorItemDetail),
-                  ),
-                  const SizedBox(
-                    height: 30,
-                  ),
-                  Row(
-                    children: [
-                      const Text(
-                        "Descriptions",
-                        style: TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.w500,
-                        ),
-                      ),
-                      const Spacer(),
-                      ExplicitCollapseAnimation(
-                        onTapCollapse: () {
-                          collapseText = !collapseText;
-                          setState(() {});
-                        },
-                      )
-                    ],
-                  ),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  AnimatedSize(
-                    duration: kAnimationCollapse,
-                    child: AnimatedContainer(
-                      duration: kAnimationCollapse,
-                      height: collapseText ? 0 : null,
-                      child: const Text(
-                        "You've just seen how to unit test a repository. In these next steps, you're going to again use dependency injection and create another test double—this time to show how to write unit and integration tests for your view models.",
-                        style: TextStyle(
-                          color: Colors.black45,
-                            fontSize: 18,
-                        ),
-                      ),
-                    ),
-                  ),
-                  const SizedBox(
-                    height: 30,
-                  ),
-                  Row(
-                    children: const [
-                      Text(
-                        "Size your size",
-                        style: TextStyle(
-                            fontSize: 18, fontWeight: FontWeight.w500),
-                      ),
-                      Spacer(),
-                      Text(
-                        "Size Guide",
-                        style: TextStyle(fontSize: 18, color: kColorItemDetail),
-                      )
-                    ],
-                  ),
-                  const SizedBox(
-                    height: 20,
-                  ),
-                  SizedBox(
-                    height: 60,
-                    child: ListView.builder(
-                        scrollDirection: Axis.horizontal,
-                        itemCount: sizeList.length,
-                        itemBuilder: (context, index) => ItemSizeView(
-                            label: sizeList[index].name ?? "",
-                            changeBackground:
-                                sizeList[index].isSelected ?? false,
-                            onTapSize: () {
-                              sizeList[index].isSelected =
-                                  !(sizeList[index].isSelected ?? false);
-                              setState(() {});
-                            })),
-                  )
-                ],
-              ),
-            )
-          ]))
+            delegate: SliverChildListDelegate(
+              [
+                OutfitInfoSection(
+                    collapseText: collapseText,
+                    sizeList: sizeList,
+                    onTapCollapse: () {
+                      setState(() {
+                        collapseText = !collapseText;
+                      });
+                    },
+                    onTapSize: (index) {
+                      setState(() {
+                        sizeList[index].isSelected =
+                            !(sizeList[index].isSelected ?? false);
+                      });
+                    })
+              ],
+            ),
+          )
         ],
       ),
     );
   }
 }
 
-class ItemCoverSection extends StatelessWidget {
-  const ItemCoverSection({
+class OutfitCoverSection extends StatelessWidget {
+  const OutfitCoverSection({
     Key? key,
   }) : super(key: key);
 
@@ -226,6 +143,118 @@ class ItemCoverSection extends StatelessWidget {
           ),
         ),
       ],
+    );
+  }
+}
+
+class OutfitInfoSection extends StatelessWidget {
+  const OutfitInfoSection({
+    Key? key,
+    required this.collapseText,
+    required this.sizeList,
+    required this.onTapCollapse,
+    required this.onTapSize,
+  }) : super(key: key);
+  final VoidCallback onTapCollapse;
+  final Function(int) onTapSize;
+  final bool collapseText;
+  final List<SizeVO> sizeList;
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 16),
+      decoration: BoxDecoration(borderRadius: BorderRadius.circular(16)),
+      child: Column(
+        children: [
+          const Text(
+            "OUTFIT IDEAS",
+            style: TextStyle(fontSize: 18),
+          ),
+          const SizedBox(
+            height: 10,
+          ),
+          const Text(
+            "Modern Blue Jacket",
+            style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+          ),
+          const SizedBox(
+            height: 10,
+          ),
+          const Text(
+            "\$ 19,39 ",
+            style: TextStyle(fontSize: 18, color: kColorItemDetail),
+          ),
+          const SizedBox(
+            height: 30,
+          ),
+          Row(
+            children: [
+              const Text(
+                "Descriptions",
+                style: TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
+              const Spacer(),
+              ExplicitCollapseAnimation(
+                onTapCollapse: () {
+                  onTapCollapse();
+                },
+              )
+            ],
+          ),
+          const SizedBox(
+            height: 10,
+          ),
+          AnimatedSize(
+            duration: kAnimationCollapse,
+            child: AnimatedContainer(
+              duration: kAnimationCollapse,
+              height: collapseText ? 0 : null,
+              child: const Text(
+                "You've just seen how to unit test a repository. In these next steps, you're going to again use dependency injection and create another test double—this time to show how to write unit and integration tests for your view models.",
+                style: TextStyle(
+                  color: Colors.black45,
+                  fontSize: 18,
+                ),
+              ),
+            ),
+          ),
+          const SizedBox(
+            height: 30,
+          ),
+          Row(
+            children: const [
+              Text(
+                "Size your size",
+                style: TextStyle(fontSize: 18, fontWeight: FontWeight.w500),
+              ),
+              Spacer(),
+              Text(
+                "Size Guide",
+                style: TextStyle(fontSize: 18, color: kColorItemDetail),
+              )
+            ],
+          ),
+          const SizedBox(
+            height: 20,
+          ),
+          SizedBox(
+            height: 60,
+            child: ListView.builder(
+              scrollDirection: Axis.horizontal,
+              itemCount: sizeList.length,
+              itemBuilder: (context, index) => ItemSizeView(
+                  label: sizeList[index].name ?? "",
+                  changeBackground: sizeList[index].isSelected ?? false,
+                  onTapSize: () {
+                    onTapSize(index);
+                  }),
+            ),
+          )
+        ],
+      ),
     );
   }
 }
