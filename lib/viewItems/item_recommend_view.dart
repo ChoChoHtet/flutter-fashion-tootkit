@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-class RecommendItemView extends StatelessWidget{
-  const RecommendItemView({Key? key,
+class ItemRecommendView extends StatelessWidget{
+  const ItemRecommendView({Key? key,
     required this.name,
     required this.imgPath,
     required this.color,

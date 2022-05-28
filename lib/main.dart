@@ -1,7 +1,7 @@
 import 'package:floating_navbar/floating_navbar.dart';
 import 'package:floating_navbar/floating_navbar_item.dart';
 import 'package:flutter/material.dart';
-import 'package:futter_fanshion_ui/home_page.dart';
+import 'package:futter_fanshion_ui/pages/home_page.dart';
 
 void main() {
   runApp(const MyApp());

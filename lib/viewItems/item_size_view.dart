@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'colors.dart';
+import '../resources/colors.dart';
 
 const kAnimationDuration = Duration(milliseconds: 500);
 class ItemSizeView extends StatelessWidget {
@@ -16,7 +16,7 @@ class ItemSizeView extends StatelessWidget {
   }) : super(key: key);
   @override
   Widget build(BuildContext context) {
-    return InkWell(
+    return GestureDetector(
       onTap: onTapSize,
       child:Card(
         shape: RoundedRectangleBorder(
@@ -24,8 +24,8 @@ class ItemSizeView extends StatelessWidget {
         ),
         child: AnimatedContainer(
           duration: kAnimationDuration,
-          width: 60,
-          height: 60,
+          width: 54,
+          height: 50,
           decoration: BoxDecoration(
             color: changeBackground ? kColorItemDetail : Colors.white,
             borderRadius: BorderRadius.circular(10)

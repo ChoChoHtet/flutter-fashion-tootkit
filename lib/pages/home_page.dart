@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:futter_fanshion_ui/colors.dart';
-import 'package:futter_fanshion_ui/detail_page.dart';
-import 'package:futter_fanshion_ui/item_size_view.dart';
-import 'package:futter_fanshion_ui/recommend_item_view.dart';
-import 'package:futter_fanshion_ui/recommend_vo.dart';
+import 'package:futter_fanshion_ui/resources/colors.dart';
+import 'package:futter_fanshion_ui/pages/detail_page.dart';
+import 'package:futter_fanshion_ui/viewItems/item_size_view.dart';
+import 'package:futter_fanshion_ui/viewItems/item_recommend_view.dart';
+import 'package:futter_fanshion_ui/vo/recommend_vo.dart';
 
 const kAnimationFadeIn = Duration(milliseconds: 1000);
 
@@ -74,6 +74,7 @@ class _HomePageState extends State<HomePage> {
                 duration: kAnimationFadeIn,
                 child: TrendForYouSection(
                   changeTheme: changeTheme,
+                  onTapOutfit: () => _navigateDetailPage(context),
                 ),
                 builder: (context, double value, childValue) => Opacity(
                   opacity: value,
@@ -112,6 +113,14 @@ class _HomePageState extends State<HomePage> {
           ),
         ),
       ),
+    );
+  }
+  void _navigateDetailPage(BuildContext context){
+    debugPrint("on Tap outfit");
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+          builder: (context) => const DetailPage()),
     );
   }
 }
@@ -157,7 +166,7 @@ class RecommendSection extends StatelessWidget {
                           builder: (context) => const DetailPage()),
                     );
                   },
-                  child: RecommendItemView(
+                  child: ItemRecommendView(
                     name: recommendList[index].name ?? "",
                     imgPath: recommendList[index].imgPath ?? "",
                     color: recommendList[index].colors ?? Colors.white,
@@ -176,8 +185,10 @@ class TrendForYouSection extends StatelessWidget {
   const TrendForYouSection({
     Key? key,
     required this.changeTheme,
+    required this.onTapOutfit,
   }) : super(key: key);
   final bool changeTheme;
+  final VoidCallback onTapOutfit;
 
   @override
   Widget build(BuildContext context) {
@@ -194,95 +205,98 @@ class TrendForYouSection extends StatelessWidget {
           const SizedBox(
             height: 30,
           ),
-          Container(
-            height: 300,
-            decoration: BoxDecoration(borderRadius: BorderRadius.circular(20)),
-            child: Stack(
-              children: [
-                Positioned.fill(
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(20),
-                    child: Image.asset(
-                      "assets/images/model.jpeg",
-                      width: 400,
-                      height: 300,
-                      fit: BoxFit.cover,
+          InkWell(
+            onTap:onTapOutfit,
+            child: Container(
+              height: 300,
+              decoration: BoxDecoration(borderRadius: BorderRadius.circular(20)),
+              child: Stack(
+                children: [
+                  Positioned.fill(
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(20),
+                      child: Image.asset(
+                        "assets/images/model.jpeg",
+                        width: 400,
+                        height: 300,
+                        fit: BoxFit.cover,
+                      ),
                     ),
                   ),
-                ),
-                Align(
-                  alignment: Alignment.bottomLeft,
-                  child: Padding(
-                    padding: const EdgeInsets.only(left: 16, bottom: 16),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        const Text(
-                          "NEW 2020",
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 18,
-                            fontWeight: FontWeight.w700,
+                  Align(
+                    alignment: Alignment.bottomLeft,
+                    child: Padding(
+                      padding: const EdgeInsets.only(left: 16, bottom: 16),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          const Text(
+                            "NEW 2020",
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 18,
+                              fontWeight: FontWeight.w700,
+                            ),
                           ),
-                        ),
-                        const SizedBox(
-                          height: 10,
-                        ),
-                        const Text(
-                          "Modern Outfit\nCollection",
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 18,
-                            fontWeight: FontWeight.w700,
+                          const SizedBox(
+                            height: 10,
                           ),
-                        ),
-                        const SizedBox(
-                          height: 10,
-                        ),
-                        Row(
-                          children: const [
-                            SizedBox(
-                              width: 40,
-                              height: 40,
-                              child: CircleAvatar(
-                                backgroundImage: NetworkImage(
-                                    "https://static.toiimg.com/thumb/msid-84766434,imgsize-222150,width-800,height-600,resizemode-75/84766434.jpg"),
+                          const Text(
+                            "Modern Outfit\nCollection",
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 18,
+                              fontWeight: FontWeight.w700,
+                            ),
+                          ),
+                          const SizedBox(
+                            height: 10,
+                          ),
+                          Row(
+                            children: const [
+                              SizedBox(
+                                width: 40,
+                                height: 40,
+                                child: CircleAvatar(
+                                  backgroundImage: NetworkImage(
+                                      "https://static.toiimg.com/thumb/msid-84766434,imgsize-222150,width-800,height-600,resizemode-75/84766434.jpg"),
+                                ),
                               ),
-                            ),
-                            SizedBox(
-                              width: 16,
-                            ),
-                            Text(
-                              "Firna Surapt",
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 18,
-                                fontWeight: FontWeight.w700,
+                              SizedBox(
+                                width: 16,
                               ),
-                            ),
-                          ],
-                        ),
-                      ],
+                              Text(
+                                "Firna Surapt",
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.w700,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
                     ),
                   ),
-                ),
-                Align(
-                  alignment: Alignment.topRight,
-                  child: Padding(
-                    padding: const EdgeInsets.only(top: 16, right: 16),
-                    child: Container(
-                      height: 50,
-                      width: 50,
-                      decoration: BoxDecoration(
-                          color: Colors.blueAccent,
-                          borderRadius: BorderRadius.circular(25)),
-                      child: const Icon(Icons.favorite_border_outlined,
-                          size: 24, color: Colors.white),
+                  Align(
+                    alignment: Alignment.topRight,
+                    child: Padding(
+                      padding: const EdgeInsets.only(top: 16, right: 16),
+                      child: Container(
+                        height: 50,
+                        width: 50,
+                        decoration: BoxDecoration(
+                            color: Colors.blueAccent,
+                            borderRadius: BorderRadius.circular(25)),
+                        child: const Icon(Icons.favorite_border_outlined,
+                            size: 24, color: Colors.white),
+                      ),
                     ),
-                  ),
-                )
-              ],
+                  )
+                ],
+              ),
             ),
           ),
         ],

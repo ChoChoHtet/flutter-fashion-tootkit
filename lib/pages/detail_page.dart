@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:futter_fanshion_ui/colors.dart';
-import 'package:futter_fanshion_ui/explicit_collapse_animation.dart';
-import 'package:futter_fanshion_ui/explicit_favorite_animation.dart';
-import 'package:futter_fanshion_ui/item_size_view.dart';
-import 'package:futter_fanshion_ui/size_vo.dart';
+import 'package:futter_fanshion_ui/resources/colors.dart';
+import 'package:futter_fanshion_ui/aniamtion/explicit_collapse_animation.dart';
+import 'package:futter_fanshion_ui/aniamtion/explicit_favorite_animation.dart';
+import 'package:futter_fanshion_ui/viewItems/item_size_view.dart';
+import 'package:futter_fanshion_ui/vo/size_vo.dart';
+import 'package:collection/collection.dart';
 
 class DetailPage extends StatefulWidget {
   const DetailPage({Key? key}) : super(key: key);
@@ -240,19 +241,23 @@ class OutfitInfoSection extends StatelessWidget {
           const SizedBox(
             height: 20,
           ),
-          SizedBox(
-            height: 60,
-            child: ListView.builder(
-              scrollDirection: Axis.horizontal,
-              itemCount: sizeList.length,
-              itemBuilder: (context, index) => ItemSizeView(
-                  label: sizeList[index].name ?? "",
-                  changeBackground: sizeList[index].isSelected ?? false,
-                  onTapSize: () {
-                    onTapSize(index);
-                  }),
-            ),
-          )
+          Wrap(
+            children: sizeList
+                .mapIndexed((index, e) => Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        ItemSizeView(
+                          label: e.name ?? "",
+                          changeBackground: e.isSelected ?? false,
+                          onTapSize: () => onTapSize(index),
+                        ),
+                        const SizedBox(
+                          width: 10,
+                        )
+                      ],
+                    ))
+                .toList(),
+          ),
         ],
       ),
     );
