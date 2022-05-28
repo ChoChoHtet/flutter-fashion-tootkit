@@ -1,68 +1,172 @@
-import 'package:floating_navbar/floating_navbar.dart';
-import 'package:floating_navbar/floating_navbar_item.dart';
 import 'package:flutter/material.dart';
 import 'package:futter_fanshion_ui/detail_page.dart';
+import 'package:futter_fanshion_ui/item_size_view.dart';
 import 'package:futter_fanshion_ui/recommend_item_view.dart';
 
-class HomePage extends StatelessWidget {
+const kAnimationFadeIn = Duration(milliseconds: 1000);
+
+class HomePage extends StatefulWidget {
+  const HomePage({Key? key}) : super(key: key);
+
+  @override
+  State<HomePage> createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
+  bool changeTheme = false;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          const SizedBox(
-            height: 60,
-          ),
-          Row(
+      body: TweenAnimationBuilder(
+        tween: Tween<double>(begin: 0, end: 1),
+        duration: kAnimationFadeIn,
+        builder: (context, double opacityValue, child) => Opacity(
+          opacity: opacityValue,
+          child: child,
+        ),
+        child: AnimatedContainer(
+          duration: kAnimationDuration,
+          color: changeTheme
+              ? Colors.black
+              : Theme.of(context).scaffoldBackgroundColor,
+          child: Stack(
             children: [
-              const SizedBox(
-                width: 50,
-                height: 50,
-                child: CircleAvatar(
-                  backgroundImage: NetworkImage(
-                      "https://static.toiimg.com/thumb/msid-84766434,imgsize-222150,width-800,height-600,resizemode-75/84766434.jpg"),
+              TweenAnimationBuilder(
+                tween: Tween<double>(begin: 0, end: 1),
+                duration: kAnimationFadeIn,
+                child: ProfileSection(
+                  changeTheme: changeTheme,
+                  onTapNotification: () {
+                    setState(() {
+                      changeTheme = !changeTheme;
+                    });
+                  },
+                ),
+                builder: (context, double value, child) => Opacity(
+                  opacity: value,
+                  child: Padding(
+                    padding: EdgeInsets.only(top: value * 64),
+                    child: child,
+                  ),
                 ),
               ),
               const SizedBox(
-                width: 20,
+                height: 20,
               ),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: const [
-                  Text(
-                    "Hello User",
-                    style: TextStyle(fontSize: 16),
+              TweenAnimationBuilder(
+                tween: Tween<double>(begin: 0, end: 1),
+                duration: kAnimationFadeIn,
+                child: TrendForYouSection(changeTheme: changeTheme,),
+                builder: (context, double value, childValue) => Opacity(
+                  opacity: value,
+                  child: Padding(
+                    padding: EdgeInsets.only(top: 180, left: value * 16),
+                    child: childValue,
                   ),
-                  SizedBox(
-                    height: 10,
-                  ),
-                  Text(
-                    "Hello User",
-                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.w400),
-                  ),
-                ],
+                ),
               ),
-              const Spacer(),
-              const Icon(
-                Icons.notifications_none_outlined,
-                size: 30,
-              )
+              const SizedBox(
+                height: 20,
+              ),
+              Align(
+                alignment: Alignment.bottomCenter,
+                child: TweenAnimationBuilder(
+                  tween: Tween<double>(begin: 0, end: 1),
+                  duration: kAnimationFadeIn,
+                  child: RecommendSection(
+                    changeTheme: changeTheme,
+                  ),
+                  builder: (context, double value, childValue) => Opacity(
+                    opacity: value,
+                    child: Padding(
+                      padding: EdgeInsets.only(
+                        bottom: value * 90,
+                        left: 16,
+                        right: 16,
+                      ),
+                      child: childValue,
+                    ),
+                  ),
+                ),
+              ),
             ],
           ),
-          const SizedBox(
-            height: 20,
+        ),
+      ),
+    );
+  }
+}
+
+class RecommendSection extends StatelessWidget {
+  const RecommendSection({
+    Key? key,
+    required this.changeTheme,
+  }) : super(key: key);
+  final bool changeTheme;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Text(
+          "Recommended",
+          style: TextStyle(
+            color: changeTheme ? Colors.white : Colors.black,
+            fontSize: 18,
+            fontWeight: FontWeight.w500,
           ),
-          const Text(
+        ),
+        GridView.builder(
+          shrinkWrap: true,
+          itemCount: 2,
+          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 2, crossAxisSpacing: 16, childAspectRatio: 1.2),
+          itemBuilder: (BuildContext context, int index) {
+            return InkWell(
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => const DetailPage()),
+                  );
+                },
+                child: const RecommendItemView());
+          },
+        ),
+      ],
+    );
+  }
+}
+
+class TrendForYouSection extends StatelessWidget {
+  const TrendForYouSection({
+    Key? key,
+    required this.changeTheme,
+  }) : super(key: key);
+  final bool changeTheme;
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.only(right: 16),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Text(
             "Trending for you ",
-            style: TextStyle(fontSize: 18, fontWeight: FontWeight.w500),
+            style: TextStyle(
+              color: changeTheme ? Colors.white : Colors.black,
+              fontSize: 18,
+              fontWeight: FontWeight.w500,
+            ),
           ),
           const SizedBox(
             height: 20,
           ),
           Container(
             height: 300,
-            padding: const EdgeInsets.symmetric(horizontal: 16),
             decoration: BoxDecoration(borderRadius: BorderRadius.circular(20)),
             child: Stack(
               children: [
@@ -152,35 +256,72 @@ class HomePage extends StatelessWidget {
               ],
             ),
           ),
+        ],
+      ),
+    );
+  }
+}
+
+class ProfileSection extends StatelessWidget {
+  const ProfileSection({
+    Key? key,
+    required this.onTapNotification,
+    required this.changeTheme,
+  }) : super(key: key);
+  final VoidCallback onTapNotification;
+  final bool changeTheme;
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 16),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
           const SizedBox(
-            height: 20,
-          ),
-          const Text(
-            "Recommended",
-            style: TextStyle(fontSize: 18, fontWeight: FontWeight.w500),
-          ),
-          Container(
-            padding: const EdgeInsets.symmetric(horizontal: 16),
-            //  height: 180,
-            child: GridView.builder(
-              shrinkWrap: true,
-              itemCount: 2,
-              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 2,
-                  crossAxisSpacing: 16,
-                  childAspectRatio: 1.2),
-              itemBuilder: (BuildContext context, int index) {
-                return InkWell(
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => DetailPage()),
-                      );
-                    },
-                    child: const RecommendItemView());
-              },
+            width: 50,
+            height: 50,
+            child: CircleAvatar(
+              backgroundImage: NetworkImage(
+                  "https://static.toiimg.com/thumb/msid-84766434,imgsize-222150,width-800,height-600,resizemode-75/84766434.jpg"),
             ),
           ),
+          const SizedBox(
+            width: 20,
+          ),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Text(
+                "Howdy",
+                style: TextStyle(
+                  color: changeTheme ? Colors.white : Colors.black,
+                  fontSize: 16,
+                ),
+              ),
+              const SizedBox(
+                height: 8,
+              ),
+              Text(
+                "Cristina Yota",
+                style: TextStyle(
+                  color: changeTheme ? Colors.white : Colors.black,
+                  fontSize: 16,
+                  fontWeight: FontWeight.w400,
+                ),
+              ),
+            ],
+          ),
+          const Spacer(),
+          InkWell(
+            onTap: onTapNotification,
+            child: Icon(
+              Icons.notifications_none_outlined,
+              size: 30,
+              color: changeTheme ? Colors.white : Colors.black,
+            ),
+          )
         ],
       ),
     );

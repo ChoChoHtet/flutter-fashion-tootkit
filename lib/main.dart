@@ -18,23 +18,33 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-       home: FloatingNavBar(
-      resizeToAvoidBottomInset: false,
-      color: Colors.white,
-      selectedIconColor: Colors.blue,
-      unselectedIconColor: Colors.blue.withOpacity(0.6),
-      items: [
-        FloatingNavBarItem(iconData: Icons.home_outlined, page: HomePage(), title: 'Home'),
-        FloatingNavBarItem(iconData: Icons.home_outlined, page: HomePage(), title: 'Home'),
-        FloatingNavBarItem(iconData: Icons.home_outlined, page: HomePage(), title: 'Home'),
-        FloatingNavBarItem(iconData: Icons.home_outlined, page: HomePage(), title: 'Home'),
-      ],
-      horizontalPadding: 10.0,
-      hapticFeedback: true,
-      showTitle: false,
-    ),
-
+      home: FloatingNavBar(
+        resizeToAvoidBottomInset: false,
+        color: Colors.white,
+        selectedIconColor: Colors.blue,
+        unselectedIconColor: Colors.blue.withOpacity(0.6),
+        items: [
+          FloatingNavBarItem(
+              iconData: Icons.home_outlined,
+              page: const HomePage(),
+              title: 'Home'),
+          FloatingNavBarItem(
+              iconData: Icons.search_outlined,
+              page: const HomePage(),
+              title: 'Home'),
+          FloatingNavBarItem(
+              iconData: Icons.home_outlined,
+              page: const HomePage(),
+              title: 'Home'),
+          FloatingNavBarItem(
+              iconData: Icons.bookmark_border_outlined,
+              page: const HomePage(),
+              title: 'Home'),
+        ],
+        horizontalPadding: 10.0,
+        hapticFeedback: true,
+        showTitle: false,
+      ),
     );
   }
 }
-
