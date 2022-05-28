@@ -2,6 +2,7 @@ import 'package:floating_navbar/floating_navbar.dart';
 import 'package:floating_navbar/floating_navbar_item.dart';
 import 'package:flutter/material.dart';
 import 'package:futter_fanshion_ui/pages/home_page.dart';
+import 'package:futter_fanshion_ui/resources/colors.dart';
 
 void main() {
   runApp(const MyApp());
@@ -22,8 +23,8 @@ class MyApp extends StatelessWidget {
       home: FloatingNavBar(
         resizeToAvoidBottomInset: false,
         color: Colors.white,
-        selectedIconColor: Colors.blue,
-        unselectedIconColor: Colors.blue.withOpacity(0.6),
+        selectedIconColor: kColorItemDetail,
+        unselectedIconColor: kColorItemDetail.withOpacity(0.6),
         items: [
           FloatingNavBarItem(
               iconData: Icons.home_outlined,
